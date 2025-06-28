@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="0" author="apod_service">
+        <createTable tableName="apod" schemaName="apod_schema">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_apod"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_apod_date"/>
+            </column>
+            <column name="explanation" type="text"/>
+            <column name="hdurl" type="varchar(255)"/>
+            <column name="media_type" type="varchar(255)"/>
+            <column name="service_version" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="url" type="varchar(255)"/>
+            <column name="copyright" type="varchar(255)"/>
+            <column name="created_at" type="timestamp"/>
+        </createTable>
+
+        <createIndex tableName="apod" indexName="idx_apod_date">
+            <column name="date"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

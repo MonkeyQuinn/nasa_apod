@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Astronomy Picture of the Day</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="mid-text">
+    <h1 th:text="${apod.getTitle()}">TITLE</h1>
+    <p th:if="${apod.getCopyright() != null && !apod.getCopyright().isBlank()}"
+       th:text="${'by ' + apod.getCopyright()}">COPYRIGHT</p>
+    <img th:src="${apod.getUrl()}" th:alt="${apod.getTitle()}"/>
+    <p th:text="${apod.getExplanation()}">EXPLANATION</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+* {
+    background-color: black;
+    color: white;
+}
+
+.mid-text {
+    text-align: center;
+}
+
+.mid-text h1 {
+    margin-bottom: 0;
+}
