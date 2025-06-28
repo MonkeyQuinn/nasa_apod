@@ -6,12 +6,34 @@
     <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-<div class="mid-text">
-    <h1 th:text="${apod.getTitle()}">TITLE</h1>
-    <p th:if="${apod.getCopyright() != null && !apod.getCopyright().isBlank()}"
-       th:text="${'by ' + apod.getCopyright()}">COPYRIGHT</p>
-    <img th:src="${apod.getUrl()}" th:alt="${apod.getTitle()}"/>
-    <p th:text="${apod.getExplanation()}">EXPLANATION</p>
+<div class="container">
+    <div class="mid-text">
+        <h1 th:text="${apod.getTitle()}">TITLE</h1>
+        <p th:if="${apod.getCopyright() != null && !apod.getCopyright().isBlank()}"
+           th:text="${'by ' + apod.getCopyright()}">COPYRIGHT</p>
+    </div>
+
+    <div class="image-navigation">
+        <div class="nav-slot">
+            <a th:if="${previousDate != null}" th:href="@{/apod/{date}(date=${previousDate})}" class="nav-link">
+                &#8592;Prev
+            </a>
+        </div>
+        <div class="image-wrapper">
+            <img th:src="${apod.getUrl()}" th:alt="${apod.getTitle()}"/>
+        </div>
+        <div class="nav-slot">
+            <a th:if="${nextDate != null}" th:href="@{/apod/{date}(date=${nextDate})}" class="nav-link">
+                Next &#8594;
+            </a>
+        </div>
+    </div>
+
+    <p class="explanation" th:text="${apod.getExplanation()}">EXPLANATION</p>
+
+    <div class="footer">
+        <p th:text="${apod.getDate()}">DATE</p>
+    </div>
 </div>
 </body>
 </html>

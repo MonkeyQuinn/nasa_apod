@@ -20,4 +20,10 @@ public interface ApodService {
 
     Optional<ApodDto> getApodByDate(LocalDate date);
 
+    List<ApodDto> getAllApods();
+
+    Optional<String> getPreviousDate(LocalDate date);
+
+    Optional<String> getNextDate(LocalDate date);
+
 }
