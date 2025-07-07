@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/apod")
@@ -15,13 +16,13 @@ public class ApodApiController {
     private final ApodService apodService;
 
     @GetMapping
-    public ApodDto getApod() {
-        return apodService.getLastApod().orElse(new ApodDto());
+    public ApodDto getApod(Locale locale) {
+        return apodService.getLastApod(locale).orElse(new ApodDto());
     }
 
     @GetMapping("/all")
-    public List<ApodDto> getApods() {
-        return apodService.getAllApods();
+    public List<ApodDto> getApods(Locale locale) {
+        return apodService.getAllApods(locale);
     }
 
 }

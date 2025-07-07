@@ -15,7 +15,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: ${DB_SCHEMA}
+        default_schema: apod_schema
 
   liquibase:
     enabled: true
@@ -25,3 +25,6 @@ api:
   nasa:
     key: ${NASA_API_KEY}
     base-url: https://api.nasa.gov
+
+  deepl:
+    key: ${DEEPL_API_KEY}

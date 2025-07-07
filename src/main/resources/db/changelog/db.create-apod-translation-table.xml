@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="0" author="apod_service">
+        <createTable tableName="apod_translation" schemaName="apod_schema">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_apod_translation"/>
+            </column>
+            <column name="apod_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale" type="varchar(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="explanation" type="text"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="created_at" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="apod_translation" baseColumnNames="apod_id"
+                                 constraintName="fk_apod_translation_apod"
+                                 referencedTableName="apod" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addUniqueConstraint tableName="apod_translation" columnNames="apod_id, locale"
+                             constraintName="uq_apod_translation_apod_locale"/>
+    </changeSet>
+</databaseChangeLog>

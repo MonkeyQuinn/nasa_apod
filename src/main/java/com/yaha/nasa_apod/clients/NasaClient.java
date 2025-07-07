@@ -2,67 +2,52 @@ package com.yaha.nasa_apod.clients;
 
 import com.yaha.nasa_apod.model.dto.ApodDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.util.UriBuilder;
+import org.springframework.web.client.RestClient.ResponseSpec;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 @RequiredArgsConstructor
 public class NasaClient {
 
     private static final String APOD_ENDPOINT = "planetary/apod";
 
     private final RestClient restClient;
-
-    @Value("${api.nasa.key}")
-    private String apiKey;
+    private final String apiKey;
 
     public ApodDto fetchApod() {
-        return fetchNasa(ApodDto.class, new HashMap<>());
+        return exchangeRequest(ApodDto.class, Map.of());
     }
 
     public ApodDto fetchApodByDate(String date) {
-        return fetchNasa(ApodDto.class, Map.of("date", date));
+        return exchangeRequest(ApodDto.class, Map.of("date", date));
     }
 
     public List<ApodDto> fetchApodsByDateRange(String startDate, String endDate) {
-        return fetchNasa(new ParameterizedTypeReference<>() {
+        return exchangeRequest(new ParameterizedTypeReference<>() {
         }, Map.of("start_date", startDate, "end_date", endDate));
     }
 
-    private <T> T fetchNasa(Class<T> clazz, Map<String, String> params) {
-        UriBuilder uriBuilder = UriComponentsBuilder.fromPath(APOD_ENDPOINT).queryParam("api_key", apiKey);
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            uriBuilder = uriBuilder.queryParam(entry.getKey(), entry.getValue());
-        }
-
-        return restClient.get()
-                .uri(uriBuilder.build())
-                .retrieve()
-                .body(clazz);
-
+    private <T> T exchangeRequest(Class<T> type, Map<String, String> params) {
+        return responseSpec(params).body(type);
     }
 
-    private <T> T fetchNasa(ParameterizedTypeReference<T> responseType, Map<String, String> params) {
-        UriBuilder uriBuilder = UriComponentsBuilder.fromPath(APOD_ENDPOINT).queryParam("api_key", apiKey);
+    private <T> T exchangeRequest(ParameterizedTypeReference<T> responseType, Map<String, String> params) {
+        return responseSpec(params).body(responseType);
+    }
 
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            uriBuilder = uriBuilder.queryParam(entry.getKey(), entry.getValue());
-        }
+    private ResponseSpec responseSpec(Map<String, String> params) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromPath(APOD_ENDPOINT).queryParam("api_key", apiKey);
+
+        params.forEach(uriBuilder::queryParam);
 
         return restClient.get()
-                .uri(uriBuilder.build())
-                .retrieve()
-                .body(responseType);
-
+                .uri(uriBuilder.build().toUri())
+                .retrieve();
     }
 
 }

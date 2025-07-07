@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class ApodScheduler {
         try {
             ApodDto apodDto = apodService.getApodFromNasa();
 
-            if (apodService.getApodByDate(apodDto.getDate()).isEmpty()) {
+            if (apodService.getApodByDate(Locale.ENGLISH, apodDto.getDate()).isEmpty()) {
                 apodService.saveApod(apodDto);
                 log.info("Saved apod {}", apodDto);
 
