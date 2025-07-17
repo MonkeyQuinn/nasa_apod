@@ -141,7 +141,7 @@ public class ApodServiceImpl implements ApodService {
             Supplier<? extends T> enSupplier,
             Supplier<? extends T> transSupplier
     ) {
-        return locale != null && locale.getLanguage().equalsIgnoreCase("en")
+        return locale == null || locale.getLanguage().equalsIgnoreCase("en")
                 ? enSupplier.get() : transSupplier.get();
     }
 
